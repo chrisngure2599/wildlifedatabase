@@ -1,0 +1,37 @@
+﻿*Login & Security
+	-Adding the other peaple
+	-->Password is Default
+	-->Activate by email
+	@Admin
+*Species Management
+	-Adding species
+	-Edit Species
+	-Delete Species
+	@Admin
+*Parks Management
+	-Crud of Parks
+	-->Tag zone
+	@Admin
+	@Surveyor
+*Types Management
+	-Adding types of parks
+	@Admin
+*Data management
+          adding 
+         @surveyor
+*Results
+	-Adding colected results 	 current  or earlier	
+	-View results in different 	 ways
+	 --By month
+	--Year
+	--Park
+	--Species
+	@Admin
+	@Admin's Boss
+	@Surveyor
+*Zone management
+	-CRUD of Zones
+	@Admin
+
+
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Parks | Wildlife Database </title>
+<?php 
+require '../includes/db.php';
+require 'nav.php';
+require_once 'gaurd.php';
+ ?>	
+</head>
+<body>
+<div class="w3-container w3-row " >
+	<div class="w3-quarter" >
+		<h1 align="center" class="w3-blue" >Add Species</h1>
+		<form method="post" action="" enctype="multipart/form-data"  >
+			<label><i>Species Name</i></label>
+			<input required="" type="text" class="w3-input w3-border" name="name" autofocus="">
+			<label><i>Species Image</i></label>
+			<input type="file" required="" class="w3-input w3-border" name="image" autofocus=""><br>
+			<input type="submit" name="go" class="w3-input w3-border w3-green" >
+		
+<?php 
+	if (isset($_POST['go'])) {
+		//time to recieve the variable
+		$name=mysqli_escape_string($db,$_POST['name']);
+
+		//Processing the image
+		$image=$_FILES['image'];
+		$size=$image['size'];
+		$tmp_name=$image['tmp_name'];
+		$imgname=$image['name'];
+		//the size in megabytes
+		$asize=10;
+		$asize=$asize*1024*1024;
+		//checking the size if is allowed
+		if ($size<=$asize) {
+		//if the size is allowed its time to check the type
+		#allowed type = $atype
+		
+		$atype=array('jpg','png','jpeg','gif');
+		#The image $type
+		strtolower($ext=explode('.', $imgname));
+		
+		 $ext=end($ext);
+		if (in_array($ext,$atype)) {
+			//if the image hass passed through all those checks ->
+			//then its time to upload
+			#But first creating the final name $fname
+			$fname=$name.uniqid().'.'.$ext;
+			//finally uploading
+			//print_r($image);
+			move_uploaded_file($tmp_name,'../uploads/'.$fname);
+			//and now save to the darabase
+			$query=("INSERT INTO `species`
+				( `name`, `image`) VALUES 
+				('$name','$fname')");
+			$db->query($query);
+			//echo $db->error;
+			//redirecting to the same page
+			header('location:species.php');
+		}
+		}elseif ($size>$asize) {
+			echo 'The size is too large allowed is $asize mb';
+		}
+
+
+	}
+
+?>
+</form>
+	</div>
+	<div class="w3-rest w3-padding " >
+		<h4 align="center" >Available Species</h4>
+		<?php 
+		//quering the available species
+		$query=("SELECT * FROM species ");
+		$res=$db->query($query);
+		$ans=mysqli_num_rows($res);
+		if ($ans==0) {
+			echo "<p class='w3-center' aligned='justified' >Sorry $ans found in the database";
+		}elseif ($ans>0) {
+			echo "<h2 align='center'  ><b>$ans</b> WildAnimals Found</h2>";
+			//looping to  list Dar animals
+			echo "<div class='w3-row-padding'>";
+			while ($data=mysqli_fetch_assoc($res)) {
+			    ?>
+			    <div class=" w3-border w3-quarter w3-padding w3-margin " >
+			    	<h5 align="center" >
+			    		<?php echo $data['name']; ?>
+			 		</h5>
+			 		<hr  style="border-color: gray;border-style:dashed;" >
+			 		<img width="200px" height="210px"  src="../uploads/<?php echo$data['image'] ?>" class=" w3-round w3-centered"  >
+			 		<table class="w3-table" >
+			 			<tr>
+			 				<th>
+			 					<a href="" class="w3-btn" >Edit</a>
+			 				</th>
+			 				<th>
+			 					<a href="" class="w3-btn w3-red " >Delete</a>
+			 				</th>
+			 			</tr>
+			 		</table>
+			    </div>
+			    <?php
+			}
+				
+			}
+		 ?>
+	</div>
+</div>
+</div>
+</body>
+</html>

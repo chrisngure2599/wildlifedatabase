@@ -1,0 +1,31 @@
+﻿*A total count aims to count all the animals in a specific area.
+This area is called the census unit*
+Needed Things/Items
+-Users
+	 -id
+	-user_name
+	-email
+	-password
+	-role
+	-full_name
+	-id_card_number
+-Species
+	-id
+	-name
+	-image
+-Parks
+	-id
+	-name
+	-location*
+	-type_id
+	-user_id
+-Types
+	-id
+	-type_name
+	-Description
+-Results
+	-id
+	-time
+	-species_id
+	-total
+	-park_id
